@@ -64,15 +64,22 @@ class MovimientoAdapter (context:Context, movimientos:List<Movimiento>):
         }
         var bottonUpdate = view.findViewById<ImageButton>(R.id.button_update)
         bottonUpdate.setOnClickListener{
-            val fragment = EditControlFinancieroFragment()
-            val fragmentManager = (context as MainActivity).supportFragmentManager
-            val transaction = fragmentManager.beginTransaction()
-            transaction.replace(R.id.home_content, fragment)
-            transaction.addToBackStack(null) // Agrega la transacción a la pila de retroceso
-            transaction.commit()
-            if (movimiento != null) {
-                fragment.movimientoModificar = movimiento
-            }
+            AlertDialog.Builder(context)
+                .setTitle("Confirmación")
+                .setMessage("¿Desea editar el registro?")
+                .setPositiveButton("Sí") { dialog, which ->
+                    val fragment = EditControlFinancieroFragment()
+                    val fragmentManager = (context as MainActivity).supportFragmentManager
+                    val transaction = fragmentManager.beginTransaction()
+                    transaction.replace(R.id.home_content, fragment)
+                    transaction.addToBackStack(null) // Agrega la transacción a la pila de retroceso
+                    transaction.commit()
+                    if (movimiento != null) {
+                        fragment.movimientoModificar = movimiento
+                    }
+                }
+                .setNegativeButton("No", null)
+                .show()
         }
 
 
